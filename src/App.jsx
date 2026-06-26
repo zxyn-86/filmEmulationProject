@@ -1,5 +1,6 @@
 
 import './App.css'
+import FileUploader from "./fileUploader";
 
 function App() {
   
@@ -16,6 +17,8 @@ function App() {
         letterSpacing: '-2px'
 
       }}>Film Emulation</h1>
+
+      <FileUploader/>
     </div>
   )
 }
