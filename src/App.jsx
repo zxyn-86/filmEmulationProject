@@ -12,7 +12,7 @@ function App() {
         fontSize: '48px',
         fontWeight: 'bold',
         textAlign: 'left',
-        paddingTop: '10px',
+        paddingTop: '5px',
         fontFamily: 'Alte Haas Grotesk',
         letterSpacing: '-2px'
 
