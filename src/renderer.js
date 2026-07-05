@@ -1,10 +1,10 @@
 
-import { createProgram } from "/helper.js";
-import { createQuad } from "/helper.js";
-import { createImageTexture } from "/helper.js";
+import { createProgram } from "./helper.js";
+import { createQuad } from "./helper.js";
+import { createImageTexture } from "./helper.js";
 
-import vertSrc from './shaders/vertex.glsl';
-import fragSrc from './shaders/fragment.glsl';
+import vertSrc from './vertex.glsl';
+import fragSrc from './fragment.glsl';
 
 import { parseCubeFile, createLutTexture } from './lutLoader.js';
 

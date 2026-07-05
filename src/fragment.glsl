@@ -1,6 +1,7 @@
 // src/core/shaders/fragment.glsl
 #version 300 es
 precision highp float;
+precision highp sampler3D;
 
 uniform sampler2D u_image;
 uniform sampler3D u_lut;
