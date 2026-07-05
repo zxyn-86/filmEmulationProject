@@ -60,7 +60,7 @@ export default function LutPicker({ renderer, onLutLoaded }) {
      style ={{
         position: "absolute",  // takes it out of normal flow
         top: "290px",           // distance from top
-        right: "150px", 
+        right: "160px", 
         display: "flex",
         alignItems: "center",      // centers vertically
         justifyContent: "center",  // centers horizontally

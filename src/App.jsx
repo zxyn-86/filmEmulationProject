@@ -1,7 +1,7 @@
 
 import './App.css'
 import FileUploader from "./fileUploader";
-import { useEffect, useRef} from "react";
+import { useEffect, useRef, useState} from "react";
 import { Renderer } from "./renderer.js";
 import Controls from "./controls.jsx"
 import LutPicker from './lutPicker.jsx';
@@ -12,8 +12,12 @@ function App() {
   const rendererRef = useRef(null);
 
   // const [lutLoaded, setLutLoaded]     = useState(false);
+     const [imageLoaded, setImageLoaded] = useState(false);
 
-  
+  const handleImageDrop = async (file) => {
+    await rendererRef.current?.loadImage(file);
+    setImageLoaded(true);
+  };
 
   useEffect(() =>{
 
@@ -49,11 +53,16 @@ function App() {
       />
 
        
-      <Controls renderer={rendererRef} />
+      {imageLoaded && (
+          <>
+            <Controls renderer={rendererRef} />
+          </>
+        )}
           
       </div>
       
       <div id = "canvas-stage">
+        <FileUploader onFileAccepted={handleImageDrop} />
         <canvas id = "gl-canvas" ref = {canvasRef}/>
       </div>
 

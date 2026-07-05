@@ -1,6 +1,6 @@
 import {useState} from "react";  //this is the use state hook that allows us to add a state variable to a component and update it 
 
-function FileUploader(){
+function FileUploader({onFileAccepted}){
     //here we are setting up those state variables and what sets them 
     const [files, setFiles] = useState([]);
     const [isHovered, setIsHovered] = useState(false);
@@ -19,11 +19,9 @@ function FileUploader(){
             return;
         }
 
-
         setFiles(imageFiles);
-
         setIsDragging(false);
-
+        onFileAccepted?.(imageFiles[0]); 
         console.log("image accepted");
     };
 
@@ -39,7 +37,7 @@ function FileUploader(){
         const uploadedFiles = Array.from(e.target.files);
         const imageFiles = uploadedFiles.filter(file => file.type.startsWith("image/"));
         setFiles(imageFiles);
-
+        onFileAccepted?.(imageFiles[0]); 
 
     };
     

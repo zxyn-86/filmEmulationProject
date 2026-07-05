@@ -70,7 +70,20 @@ export default function Controls({ renderer }) {
 
   return (
     <div className="controls-panel">
-      <div className="controls-header">
+      <div className="controls-header"
+      style = {{
+            position: "absolute",  // takes it out of normal flow
+            top: "360px",           // distance from top
+            right: "190px", 
+            display: "flex",
+            alignItems: "center",      // centers vertically
+            justifyContent: "center",  // centers horizontally
+            flexDirection: "column",
+            fontFamily: "roboto mono",
+            fontSize: "15px",
+        
+        }}
+      >
         <h3>Adjustments</h3>
         <button className="reset-btn" onClick={handleReset}>
           Reset
@@ -80,7 +93,7 @@ export default function Controls({ renderer }) {
       <div className="sliders"
         style = {{
             position: "absolute",  // takes it out of normal flow
-            top: "420px",           // distance from top
+            top: "460px",           // distance from top
             right: "145px", 
             display: "flex",
             alignItems: "center",      // centers vertically
