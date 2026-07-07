@@ -82,9 +82,11 @@ export class Renderer {
 
     async loadImage(file)
     {
-        const img = await loadImageFromFile(file);
-        this.imageTexture = createImageTexture(this.gl, img);
-        this.render();
+      const img = await loadImageFromFile(file);
+      this.imageTexture = createImageTexture(this.gl, img);
+      this.render();
+
+      return { width: img.naturalWidth, height: img.naturalHeight};
     }
 
     loadLut(cubeText) 

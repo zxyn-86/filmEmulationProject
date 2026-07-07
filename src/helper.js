@@ -68,9 +68,15 @@ export function createImageTexture(gl, image) {
   gl.canvas.height = image.naturalHeight;
   gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
+
+
   const texture = gl.createTexture();
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, texture);
+
+
+
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);  //web gl flips image so flip back 
 
   // filtering — LINEAR gives smooth results
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
