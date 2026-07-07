@@ -10,14 +10,42 @@ function App() {
   
   const canvasRef = useRef(null);
   const rendererRef = useRef(null);
+  const canvasStageRef = useRef(null);
 
   
 
   // const [lutLoaded, setLutLoaded]     = useState(false);
-     const [imageLoaded, setImageLoaded] = useState(false);
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [canvasStyle, setCanvasStyle] = useState({});
 
   const handleImageDrop = async (file) => {
-    await rendererRef.current?.loadImage(file);
+    if (!rendererRef.current) {
+      console.error('Renderer not ready');
+      return;
+    }
+
+    const result = await rendererRef.current.loadImage(file);
+
+    console.log('image dimensions:', result); // check what's coming back
+
+    if (!result) {
+      console.error('loadImage returned nothing');
+      return;
+    }
+
+    const { width, height } = result;
+
+    const stage = canvasStageRef.current;
+    const maxW  = stage.clientWidth  * 0.7;
+    const maxH  = stage.clientHeight * 0.7;
+
+    const scale = Math.min(maxW / width, maxH / height, 1);
+
+    setCanvasStyle({
+      width:  Math.round(width  * scale) + 'px',
+      height: Math.round(height * scale) + 'px',
+    });
+
     setImageLoaded(true);
   };
 
@@ -63,9 +91,9 @@ function App() {
           
       </div>
       
-      <div id = "canvas-stage">
+      <div id = "canvas-stage" ref = {canvasStageRef}>
         <FileUploader onFileAccepted={handleImageDrop} />
-        <canvas id = "gl-canvas" ref = {canvasRef}/>
+        <canvas id = "gl-canvas" ref = {canvasRef} style={canvasStyle}/>
       </div>
 
 
