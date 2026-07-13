@@ -35,8 +35,12 @@ function FileUploader({onFileAccepted}){
         console.log("d fired");
         e.preventDefault();
         const uploadedFiles = Array.from(e.target.files);
+        console.log("uploadedFiles array:", uploadedFiles);
+
         const imageFiles = uploadedFiles.filter(file => file.type.startsWith("image/"));
+         
         setFiles(imageFiles);
+        console.log("calling onFileAccepted with:", imageFiles[0]);
         onFileAccepted?.(imageFiles[0]); 
 
     };

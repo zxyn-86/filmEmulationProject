@@ -49,6 +49,10 @@ function App() {
     setImageLoaded(true);
   };
 
+  
+
+
+
   useEffect(() =>{
 
     rendererRef.current = new Renderer(canvasRef.current);
@@ -75,7 +79,7 @@ function App() {
       }}>Film Emulation</h1>
 
       <div>
-      <FileUploader/>
+      
 
       <LutPicker
           renderer={rendererRef}
