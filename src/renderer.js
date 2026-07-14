@@ -57,8 +57,8 @@ export class Renderer {
             throw new Error('webGl2 not supported by your browser');   
         }
 
-        //32 bit floating point is most likely what is used by a lut so it enables it as it isnt default 
-        this.gl.getExtension('EXT_color_buffer_float');
+        //32 bit floating point is most likely what is used by a lut so it enables it as it isnt default
+        this.gl.getExtension('OES_texture_float_linear');
 
         //vertex shader = "where do things go," fragment shader = "what color are they" — together, the "program" is the whole recipe for turning your data into pixels on screen.
         this.program = createProgram(this.gl, vertSrc, fragSrc);
@@ -91,9 +91,17 @@ export class Renderer {
 
     loadLut(cubeText) 
     {
-        const lutData = parseCubeFile(cubeText);
-        this.lutTexture = createLutTexture(this.gl, lutData);
-        this.render();
+      const lutData = parseCubeFile(cubeText);  //potential issue
+      this.lutSize = lutData.size;
+      // console.log('this.lutSize set to:', this.lutSize); // should log 13
+
+      // console.log('LUT size:', lutData.size);  ///debug stuff
+      // console.log('data length:', lutData.data.length, 'expected:', lutData.size * lutData.size * lutData.size * 3);
+      // console.log('first 12 values:', lutData.data.slice(0, 12));
+      // console.log('any non-zero?', lutData.data.some(v => v !== 0));
+
+      this.lutTexture = createLutTexture(this.gl, lutData); //potential issue
+      this.render();
     }
 
 /**
@@ -150,8 +158,22 @@ export class Renderer {
    */
   render() {
     // don't render if we don't have both textures yet
-    if (!this.imageTexture || !this.lutTexture) return;
- 
+    if (!this.imageTexture ) {
+      console.log('Render skipped: missing image texture');
+      
+      return;
+    }
+
+    if (!this.lutTexture) {
+      console.log('Render skipped: missing LUT texture');
+      return;
+    }
+
+    // console.log("rendering with:", {
+    //   lutSize: this.lutSize,
+    //   lutStrength: this.adjustments.lutStrength,
+    //   exposure: this.adjustments.exposure,
+    // });    
     const { gl, program, uniformLocations: u } = this;
  
     gl.clearColor(0, 0, 0, 1);

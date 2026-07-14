@@ -27,7 +27,7 @@ export function parseCubeFile(cubeText)
     data.push(r, g, b);
     }
 
-  return { size, data: new Float32Array(data) };
+    return { size, data: new Float32Array(data) };
 }
 
 export function createLutTexture(gl, { size, data }) 
@@ -45,6 +45,8 @@ export function createLutTexture(gl, { size, data })
   gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   gl.texParameteri(gl.TEXTURE_3D, gl.TEXTURE_WRAP_R, gl.CLAMP_TO_EDGE);
 
+
+  console.log('PIXEL_UNPACK_BUFFER bound:', gl.getParameter(gl.PIXEL_UNPACK_BUFFER_BINDING));
   // upload the LUT data as a 3D texture
   gl.texImage3D(
     gl.TEXTURE_3D,
@@ -55,9 +57,13 @@ export function createLutTexture(gl, { size, data })
     size,           // depth
     0,              // border (always 0)
     gl.RGB,         // format
-    gl.FLOAT,       // type
+    gl.FLOAT,      // type
     data            // the Float32Array from parseCubeFile
   );
 
+  console.log('GL error after texImage3D:', gl.getError()); // should be 0
+  console.log('float-linear ext:', gl.getExtension('OES_texture_float_linear')); 
+
+  
   return texture;
 }
