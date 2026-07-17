@@ -63,13 +63,6 @@ export function createQuad(gl, program) {
 }
 
 export function createImageTexture(gl, image) {
-  // match canvas size to image
-  gl.canvas.width = image.naturalWidth;
-  gl.canvas.height = image.naturalHeight;
-  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
-
-
   const texture = gl.createTexture();
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, texture);

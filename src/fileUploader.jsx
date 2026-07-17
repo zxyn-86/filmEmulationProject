@@ -60,24 +60,8 @@ function FileUploader({onFileAccepted}){
             onDragOver = {handleDragOver}
             onDragEnter = {handleDragEnter}
             onDragLeave = {handleDragLeave}
-            style = {{
-                position: "absolute",  // takes it out of normal flow
-                top: "100px",           // distance from top
-                right: "20px", 
-                display: "flex",
-                alignItems: "center",      // centers vertically
-                justifyContent: "center",  // centers horizontally
-                flexDirection: "column", 
-                width: "400px",
-                height: "100px",
-                border: "2px dashed #f0f3a2",
-                padding: "20px",
-
-                
-                borderRadius: "10px",
-                fontFamily: "roboto mono",
-                backgroundColor: isDragging ? "#3e2723" : "#ffffff" ,
-            }}>
+            className="uploader-card"
+            style={{ backgroundColor: isDragging ? "#3e2723" : "#ffffff" }}>
 
            <p
            style = {{

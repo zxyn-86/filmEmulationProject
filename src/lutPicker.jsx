@@ -57,19 +57,8 @@ export default function LutPicker({ renderer, onLutLoaded }) {
 
   return (
     <div className="lut-picker"
-     style ={{
-        position: "absolute",  // takes it out of normal flow
-        top: "290px",           // distance from top
-        right: "160px", 
-        display: "flex",
-        alignItems: "center",      // centers vertically
-        justifyContent: "center",  // centers horizontally
-        flexDirection: "column",
-        fontFamily: "roboto mono"
-     }}
-    
     >
-      <h3>Film Look</h3>
+      <h3>Film looks</h3>
 
       <div className="select-wrapper">
         <select

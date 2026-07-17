@@ -52,7 +52,7 @@ export class Renderer {
 
         //create canvas and gl context then throw an error if the browser doesnt support it 
         this.canvas = canvas;
-        this.gl = canvas.getContext('webgl2');
+        this.gl = canvas.getContext('webgl2', { preserveDrawingBuffer: true });
         if (!this.gl){
             throw new Error('webGl2 not supported by your browser');   
         }
@@ -68,7 +68,7 @@ export class Renderer {
 
 
         this.imageTexture = null;
-        this.lutTextture = null;
+        this.lutTexture = null;
         this.lutSize = 0;
 
         this.adjustments = {
@@ -84,23 +84,27 @@ export class Renderer {
     {
       const img = await loadImageFromFile(file);
       this.imageTexture = createImageTexture(this.gl, img);
-      this.render();
-
       return { width: img.naturalWidth, height: img.naturalHeight};
+    }
+
+    resize(width, height) {
+      const dpr = window.devicePixelRatio || 1;
+      const pixelWidth = Math.max(1, Math.round(width * dpr));
+      const pixelHeight = Math.max(1, Math.round(height * dpr));
+
+      if (this.canvas.width !== pixelWidth || this.canvas.height !== pixelHeight) {
+        this.canvas.width = pixelWidth;
+        this.canvas.height = pixelHeight;
+      }
+
+      this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     }
 
     loadLut(cubeText) 
     {
-      const lutData = parseCubeFile(cubeText);  //potential issue
+      const lutData = parseCubeFile(cubeText);  
       this.lutSize = lutData.size;
-      // console.log('this.lutSize set to:', this.lutSize); // should log 13
-
-      // console.log('LUT size:', lutData.size);  ///debug stuff
-      // console.log('data length:', lutData.data.length, 'expected:', lutData.size * lutData.size * lutData.size * 3);
-      // console.log('first 12 values:', lutData.data.slice(0, 12));
-      // console.log('any non-zero?', lutData.data.some(v => v !== 0));
-
-      this.lutTexture = createLutTexture(this.gl, lutData); //potential issue
+      this.lutTexture = createLutTexture(this.gl, lutData); 
       this.render();
     }
 
@@ -119,6 +123,8 @@ export class Renderer {
    * Called by ExportButton to trigger a download.
    */
   exportImage() {
+    this.render();
+    this.gl.finish();
     return this.canvas.toDataURL('image/png');
   }
  
@@ -169,13 +175,9 @@ export class Renderer {
       return;
     }
 
-    // console.log("rendering with:", {
-    //   lutSize: this.lutSize,
-    //   lutStrength: this.adjustments.lutStrength,
-    //   exposure: this.adjustments.exposure,
-    // });    
     const { gl, program, uniformLocations: u } = this;
  
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
     gl.clearColor(0, 0, 0, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.useProgram(program);

@@ -1,10 +1,11 @@
 
 import './App.css'
 import FileUploader from "./fileUploader";
-import { useEffect, useRef, useState} from "react";
+import { useCallback, useEffect, useRef, useState} from "react";
 import { Renderer } from "./renderer.js";
 import Controls from "./controls.jsx"
 import LutPicker from './lutPicker.jsx';
+import ExportButton from './exportButton.jsx';
 
 function App() {
   
@@ -14,37 +15,49 @@ function App() {
 
   
 
-  // const [lutLoaded, setLutLoaded]     = useState(false);
+    const [lutLoaded, setLutLoaded]     = useState(false);
     const [imageLoaded, setImageLoaded] = useState(false);
+    const [imageDimensions, setImageDimensions] = useState(null);
     const [canvasStyle, setCanvasStyle] = useState({});
 
-  const handleImageDrop = async (file) => {
-    if (!rendererRef.current) {
-      console.error('Renderer not ready');
-      return;
-    }
+    const syncCanvasSize = useCallback((dimensions = imageDimensions) => {
+      const stage = canvasStageRef.current;
+
+      if (!stage || !dimensions) {
+        return;
+      }
+
+      const maxW = stage.clientWidth * 0.92;
+      const maxH = stage.clientHeight * 0.92;
+      const scale = Math.min(maxW / dimensions.width, maxH / dimensions.height, 1);
+
+      const displayWidth = Math.round(dimensions.width * scale);
+      const displayHeight = Math.round(dimensions.height * scale);
+
+      setCanvasStyle({
+        width: `${displayWidth}px`,
+        height: `${displayHeight}px`,
+      });
+
+      rendererRef.current?.resize(displayWidth, displayHeight);
+      rendererRef.current?.render();
+    }, [imageDimensions]);
+
+    const handleImageDrop = async (file) => {
+      if (!rendererRef.current) {
+        console.error('Renderer not ready');
+        return;
+      }
 
     const result = await rendererRef.current.loadImage(file);
-
-    console.log('image dimensions:', result); // check what's coming back
 
     if (!result) {
       console.error('loadImage returned nothing');
       return;
     }
 
-    const { width, height } = result;
-
-    const stage = canvasStageRef.current;
-    const maxW  = stage.clientWidth  * 0.7;
-    const maxH  = stage.clientHeight * 0.7;
-
-    const scale = Math.min(maxW / width, maxH / height, 1);
-
-    setCanvasStyle({
-      width:  Math.round(width  * scale) + 'px',
-      height: Math.round(height * scale) + 'px',
-    });
+    setImageDimensions(result);
+    syncCanvasSize(result);
 
     setImageLoaded(true);
   };
@@ -63,44 +76,48 @@ function App() {
 
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => syncCanvasSize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [syncCanvasSize]);
+
+  useEffect(() => {
+    if (imageDimensions) {
+      syncCanvasSize(imageDimensions);
+    }
+  }, [imageDimensions, syncCanvasSize]);
+
 
 
   return (
-    <div style = {{ minHeight: '100vh', backgroundColor: '#ffffff' }}>
-      <h1 style = {{
-        color: '#000000',
-        fontSize: '48px',
-        fontWeight: 'bold',
-        textAlign: 'left',
-        paddingTop: '5px',
-        fontFamily: 'Alte Haas Grotesk',
-        letterSpacing: '-2px'
+    <div className="app-shell">
+      <header className="app-header">
+        <h1>Film Emulation</h1>
+      </header>
 
-      }}>Film Emulation</h1>
+      <div className="app-layout">
+        <section id="canvas-stage" className="photo-panel" ref={canvasStageRef}>
+          <div className="photo-toolbar">
+            
+          </div>
 
-      <div>
-      
+          <div className="photo-frame">
+            <canvas id="gl-canvas" ref={canvasRef} style={canvasStyle} />
+          </div>
+        </section>
 
-      <LutPicker
-          renderer={rendererRef}
-          //onLutLoaded={() => setLutLoaded(true)}
-      />
-
-       
-      {imageLoaded && (
-          <>
-            <Controls renderer={rendererRef} />
-          </>
-        )}
-          
+        <aside className="sidebar-panel">
+          <FileUploader onFileAccepted={handleImageDrop} />
+          <LutPicker renderer={rendererRef}  onLutLoaded={() => setLutLoaded(true)}/>
+          {imageLoaded && lutLoaded && <Controls renderer={rendererRef} />}
+          {imageLoaded && lutLoaded && <ExportButton renderer={rendererRef} />}
+        </aside>
       </div>
-      
-      <div id = "canvas-stage" ref = {canvasStageRef}>
-        <FileUploader onFileAccepted={handleImageDrop} />
-        <canvas id = "gl-canvas" ref = {canvasRef} style={canvasStyle}/>
-      </div>
-
-
     </div>
     
 

@@ -40,7 +40,7 @@ const SLIDERS = [
     min:     0,
     max:     1,
     step:    0.01,
-    default: 1,
+    default: 0,
     unit:    '',
   },
 ];
@@ -70,38 +70,14 @@ export default function Controls({ renderer }) {
 
   return (
     <div className="controls-panel">
-      <div className="controls-header"
-      style = {{
-            position: "absolute",  // takes it out of normal flow
-            top: "360px",           // distance from top
-            right: "190px", 
-            display: "flex",
-            alignItems: "center",      // centers vertically
-            justifyContent: "center",  // centers horizontally
-            flexDirection: "column",
-            fontFamily: "roboto mono",
-            fontSize: "15px",
-        
-        }}
-      >
+      <div className="controls-header">
         <h3>Adjustments</h3>
         <button className="reset-btn" onClick={handleReset}>
           Reset
         </button>
       </div>
 
-      <div className="sliders"
-        style = {{
-            position: "absolute",  // takes it out of normal flow
-            top: "460px",           // distance from top
-            right: "145px", 
-            display: "flex",
-            alignItems: "center",      // centers vertically
-            justifyContent: "center",  // centers horizontally
-            flexDirection: "column",
-            fontFamily: "roboto mono"
-        }}
-      >
+      <div className="sliders">
         {SLIDERS.map(({ key, label, min, max, step, unit }) => (
           <div key={key} className="slider-row">
 
