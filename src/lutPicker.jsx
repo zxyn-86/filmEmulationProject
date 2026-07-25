@@ -8,10 +8,15 @@ const LUTS = [
   { label: 'Select a film look...', file: null },
   { label: '── Kodak ──',           file: null,                  disabled: true },
   { label: 'Kodak BW 400',          file: 'kodak_bw_400_cn.cube' },
+  { label: 'Faded_Kodak',          file: 'Faded_Kodak.cube' },
   { label: '── Fujifilm ──',        file: null,                  disabled: true },
   { label: 'Fuji superia 200',      file: 'fuji_superia_200.cube'},
   { label: 'Fuji velvia 50',        file:  'fuji_velvia_50.cube' },
-  { label: '── Ilford ──',          file: null,                  disabled: true },
+  { label: '── misc──',          file: null,                  disabled: true },
+  { label: 'Matte',        file:  'Matte.cube' },
+  { label: 'warm golden',        file:  'Warm_Golden.cube' },
+  { label: 'cinematic teal',        file:  'Cinematic_Teal.cube' },
+  { label: 'classic BW',        file:  'BW.cube' },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────

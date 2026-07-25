@@ -38,6 +38,10 @@ function getUniformLocations(gl, program) {
     u_exposure:   gl.getUniformLocation(program, 'u_exposure'),
     u_contrast:   gl.getUniformLocation(program, 'u_contrast'),
     u_saturation: gl.getUniformLocation(program, 'u_saturation'),
+    u_whiteBalance: gl.getUniformLocation(program, 'u_whiteBalance'),
+    u_tint:         gl.getUniformLocation(program, 'u_tint'),
+    u_shadows:      gl.getUniformLocation(program, 'u_shadows'),
+    u_highlights:   gl.getUniformLocation(program, 'u_highlights'),
     u_lutStrength:gl.getUniformLocation(program, 'u_lutStrength'),
   };
 }
@@ -75,6 +79,10 @@ export class Renderer {
             exposure: 0,
             contrast: 0,
             saturation: 0,
+            whiteBalance: 0,
+            tint: 0,
+            shadows: 0,
+            highlights: 0,
             lutStrength: 1,
         };
     }
@@ -199,6 +207,10 @@ export class Renderer {
     gl.uniform1f(u.u_exposure,    this.adjustments.exposure);
     gl.uniform1f(u.u_contrast,    this.adjustments.contrast);
     gl.uniform1f(u.u_saturation,  this.adjustments.saturation);
+    gl.uniform1f(u.u_whiteBalance, this.adjustments.whiteBalance);
+    gl.uniform1f(u.u_tint,         this.adjustments.tint);
+    gl.uniform1f(u.u_shadows,      this.adjustments.shadows);
+    gl.uniform1f(u.u_highlights,   this.adjustments.highlights);
     gl.uniform1f(u.u_lutStrength, this.adjustments.lutStrength);
  
     // draw

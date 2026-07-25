@@ -3,8 +3,6 @@ import { useState } from 'react';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SLIDER CONFIG
-// Add or remove sliders here without touching any other code.
-// min/max/step/default are all defined in one place.
 // ─────────────────────────────────────────────────────────────────────────────
 const SLIDERS = [
   {
@@ -35,6 +33,42 @@ const SLIDERS = [
     unit:    '',
   },
   {
+    key:     'whiteBalance',
+    label:   'White Balance',
+    min:     -1,
+    max:     1,
+    step:    0.01,
+    default: 0,
+    unit:    '',
+  },
+  {
+    key:     'tint',
+    label:   'Tint',
+    min:     -1,
+    max:     1,
+    step:    0.01,
+    default: 0,
+    unit:    '',
+  },
+  {
+    key:     'shadows',
+    label:   'Shadows',
+    min:     -1,
+    max:     1,
+    step:    0.01,
+    default: 0,
+    unit:    '',
+  },
+  {
+    key:     'highlights',
+    label:   'Highlights',
+    min:     -1,
+    max:     1,
+    step:    0.01,
+    default: 0,
+    unit:    '',
+  },
+  {
     key:     'lutStrength',
     label:   'LUT Strength',
     min:     0,
@@ -50,7 +84,7 @@ const DEFAULTS = Object.fromEntries(SLIDERS.map((s) => [s.key, s.default]));
 // ─────────────────────────────────────────────────────────────────────────────
 // CONTROLS COMPONENT
 // Props:
-//   renderer — React ref holding the Renderer class instance (from App.jsx)
+//   renderer — React ref holding the Renderer class instance 
 // ─────────────────────────────────────────────────────────────────────────────
 export default function Controls({ renderer }) {
   const [values, setValues] = useState(DEFAULTS);

@@ -26,8 +26,8 @@
   position: relative;
   min-width: 0;
   min-height: 0;
-  background: #111111;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #f8eddb;
+  border: 1px solid rgba(246, 219, 166, 0.919);
   border-radius: 18px;
   overflow: hidden;
   display: flex;
