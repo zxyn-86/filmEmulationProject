@@ -1,16 +1,26 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Photo Editor
 
-Currently, two official plugins are available:
+A browser-based photo editing app that lets you apply cinematic color grades (LUTs) to your images in real time, powered by WebGL 2 for fast, GPU-accelerated rendering.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+How It Works
 
-## React Compiler
+1. Upload an image — the photo is loaded into the browser and drawn onto a canvas.
+   
+2. Choose a LUT — a Look-Up Table (a 3D color mapping, typically stored as a .cube file or baked into a texture) defines how each pixel's color should be transformed to achieve a specific       style or mood (e.g. cinematic, vintage, black & white).
+3. GPU rendering with WebGL 2 — the image and the LUT are uploaded to the GPU as textures. A custom fragment shader samples the LUT texture for each pixel of the source image and remaps its     RGB values accordingly, rendering the graded result directly to a <canvas> element.
+4. Real-time preview — because the color transformation happens on the GPU, adjustments and LUT swaps render instantly without blocking the UI, even on higher-resolution images.
+5. Export — the final graded image can be read back from the canvas and downloaded/exported.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+   
+Tech Stack
 
-## Expanding the ESLint configuration
+React — UI components, state management, and app structure
+Vite — dev server and build tooling for fast HMR and optimized production builds
+JavaScript — core application logic
+WebGL 2 — GPU-accelerated image rendering and LUT-based color grading via custom shaders
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Key Concepts
+LUT (Look-Up Table): A precomputed 3D color mapping used to transform an image's colors to match a specific style, without needing per-pixel manual adjustments.
+Shader-based grading: Color transformations are implemented in GLSL fragment shaders, allowing complex color math to run in parallel on the GPU rather than the CPU.
+Canvas rendering pipeline: Source image → texture upload → shader pass (with LUT sampling) → render to canvas → optional export.
