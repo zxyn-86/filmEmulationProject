@@ -61,9 +61,6 @@ export class Renderer {
             throw new Error('webGl2 not supported by your browser');   
         }
 
-        //32 bit floating point is most likely what is used by a lut so it enables it as it isnt default
-        this.gl.getExtension('OES_texture_float_linear');
-
         //vertex shader = "where do things go," fragment shader = "what color are they" — together, the "program" is the whole recipe for turning your data into pixels on screen.
         this.program = createProgram(this.gl, vertSrc, fragSrc);
         this.vao = createQuad(this.gl, this.program);
@@ -219,7 +216,6 @@ export class Renderer {
     gl.bindVertexArray(null);
   }
 }
-
 
 
 
